@@ -1,4 +1,31 @@
 {
-  "name": "실무에바로쓰는Nextjs_homework1_진채영",
-  "packageManager": "yarn@4.5.2"
+  "name": "chaeyoung",
+  "private": true,
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc -b && vite build",
+    "dev": "vite",
+    "server": "json-server --watch db.json --port 4000"
+  },
+  "author": "chaeyoung",
+  "license": "ISC",
+  "description": "",
+  "packageManager": "yarn@4.5.2",
+  "devDependencies": {
+    "@types/react": "^19.0.7",
+    "@types/react-dom": "^19.0.3",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.7.3",
+    "vite": "^6.0.7"
+  },
+  "dependencies": {
+    "@emotion/babel-plugin": "^11.13.5",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "json-server": "^1.0.0-beta.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
 }
