@@ -1,5 +1,3 @@
-# 실무에 바로 쓰는 Nextjs_homework1\_진채영
-
 실행 방법
 
 ```bash
