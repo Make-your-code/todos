@@ -12,7 +12,7 @@ function TodoList({ todos, onDelete, onToggle }: TodoListProps) {
     <div>
       <ul>
         {todos.map((todo: Todo) => (
-          <li id={todo.id}>
+          <li key={todo.id}>
             {todo.completed ? <p style={{ textDecoration: "line-through" } as React.CSSProperties}>{todo.text}</p> : <p>{todo.text}</p>}
             <button
               onClick={() => {

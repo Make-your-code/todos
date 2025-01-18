@@ -23,9 +23,11 @@ export type ToggleTodoProps = Omit<Todo, "text">;
 const BASE_URL = "http://localhost:4000/todos";
 
 export default function App() {
-  const [text, setText] = useState<Todo["text"]>("");
+  const [text, setText] = useState<string>("");
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [doneTodos, setDoneTodos] = useState<Todo[]>([]);
+
+  const completedTodos = todos.filter((todo) => todo.completed);
+  const uncompletedTodos = todos.filter((todo) => !todo.completed);
 
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value);
@@ -35,8 +37,8 @@ export default function App() {
     if (text.trim() === "") return;
     try {
       const newTodo: Todo = { id: crypto.randomUUID(), text, completed: false };
-      await fetch(`${BASE_URL}`, { method: "POST", body: JSON.stringify(newTodo) });
-      //   setTodos(prev => [...prev, newTodo]);
+      const res = await fetch(`${BASE_URL}`, { method: "POST", body: JSON.stringify(newTodo) });
+      if(res.status === 201 ) {setTodos(prev => [...prev, newTodo])}
     } catch (e) {
       console.error();
     } finally {
@@ -52,12 +54,17 @@ export default function App() {
 
   const handleToggleTodo = async ({ id, completed }: ToggleTodoProps) => {
     try {
-      await fetch(`${BASE_URL}/${id}`, {
+      const res = await fetch(`${BASE_URL}/${id}`, {
         method: "PATCH",
         body: JSON.stringify({
           completed: !completed,
         }),
+        
       });
+
+      if (res.status === 200){
+        setTodos((prev) => prev.map((todo) => (todo.id === id ? { ...todo, completed: !completed } : todo)));
+      }
     } catch (e) {
       console.error(e);
     }
@@ -65,26 +72,27 @@ export default function App() {
 
   const handleDelete = async (id: Todo["id"]) => {
     try {
-      await fetch(`${BASE_URL}/${id}`, { method: "DELETE" });
+
+      const res = await fetch(`${BASE_URL}/${id}`, { method: "DELETE" });
+      if (res.status === 200) {
+        setTodos(prev => prev.filter(todo => todo.id !== id))
+      }
     } catch (e) {
       console.error(e);
     }
   };
 
   const getTodos = async (): Promise<Paginate<Todo>> => {
-    const res = await fetch(`${BASE_URL}?_page=1&_per_page=25`);
-    const data = await res.json();
-
+      const res = await fetch(`${BASE_URL}?_page=1&_per_page=25`);
+      const data = await res.json(); 
     return data;
   };
 
-  useEffect(() => {
+  useEffect(() =>{
     getTodos().then(data => {
-      const todos = data.data;
-      setTodos(todos.filter(todo => todo.completed !== true));
-      setDoneTodos(todos.filter(todo => todo.completed !== false));
-    });
-  }, [todos, doneTodos]);
+     const todos = data.data;
+     setTodos(todos);
+   } )},[]);
 
   return (
     <div id="todos-container">
@@ -93,8 +101,8 @@ export default function App() {
         <input type="text" onChange={handleTextChange} onKeyDown={handleKeyEnter} value={text} />
         <button onClick={handleAddTodo}>Add Todo</button>
       </div>
-      <TodoList todos={todos} onDelete={handleDelete} onToggle={handleToggleTodo} />
-      <TodoList todos={doneTodos} onDelete={handleDelete} onToggle={handleToggleTodo} />
+      <TodoList todos={uncompletedTodos} onDelete={handleDelete} onToggle={handleToggleTodo} />
+      <TodoList todos={completedTodos} onDelete={handleDelete} onToggle={handleToggleTodo} />
     </div>
   );
 }
