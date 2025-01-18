@@ -1,0 +1,29 @@
+{
+  "todos": [
+    {
+      "id": "29a7f4e3-abe6-4993-9ccc-f8db2178931d",
+      "text": "하이",
+      "completed": true
+    },
+    {
+      "id": "2069ea78-691b-413c-8613-a451dce0edf2",
+      "text": "하이",
+      "completed": true
+    },
+    {
+      "id": "a6da326d-a815-447a-bc1e-abbbf993d28f",
+      "text": "반가워요",
+      "completed": true
+    },
+    {
+      "id": "ef1ed1d8-05bc-4cde-b7f7-057277421b48",
+      "text": "할일입니다.",
+      "completed": false
+    },
+    {
+      "id": "b6a4fd84-aa9a-4e83-901d-96bbeb0d8a4e",
+      "text": "할일 추가",
+      "completed": false
+    }
+  ]
+}
